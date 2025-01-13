@@ -78,7 +78,7 @@ const HomePage = () => {
 				<BannerSlide movieDetails={movieDetails} />
 			)}
 			<div className='container'>
-				<div className='grid grid-cols-5'>
+				<div className='grid grid-cols-5 gap-5'>
 					{movieAnimeData?.map((movie: any) => (
 						<div key={movie?.id}>
 							<MovieCard movie={movie} />
