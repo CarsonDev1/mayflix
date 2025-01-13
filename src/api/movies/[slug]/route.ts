@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from 'axios';
 
 export const getMovieSlug = async (slug: string): Promise<any> => {
