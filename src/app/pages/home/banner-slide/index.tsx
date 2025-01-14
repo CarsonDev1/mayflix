@@ -40,7 +40,7 @@ const BannerSlide = ({ movieDetails }: any) => {
 		<div>
 			<div className='bg-black text-white'>
 				{/* Slider */}
-				<div className='relative h-[50vh] sm:h-dvh'>
+				<div className='relative h-[60vh] md:h-screen 2xl:h-dvh'>
 					{/* Main Slider */}
 					<div className='absolute inset-0'>
 						{items?.map((item: any, index: number) => (
@@ -53,14 +53,14 @@ const BannerSlide = ({ movieDetails }: any) => {
 								<Image
 									src={item?.movie?.thumb_url}
 									alt={`Slide ${index + 1}`}
-									className='w-full object-cover'
+									className='w-full object-cover h-full'
 									fill
 									quality={100}
 								/>
 								<div className='absolute inset-0 bg-black/30 w-full h-full rounded-md'></div>
 								<div className='absolute inset-0 bg-gradient-to-t from-black to-transparent' />
-								<div className='absolute top-1/4 left-4 sm:left-10 md:left-20 lg:left-32 z-10 flex flex-col justify-between h-72'>
-									<span className='px-3 py-1 text-sm sm:text-base md:text-xl bg-red-600 rounded-md w-fit'>
+								<div className='absolute top-1/4 left-4 sm:left-10 md:left-20 lg:left-32 z-10 flex flex-col justify-between max-h-72 sm:h-dvh overflow-hidden gap-3'>
+									<span className='px-3 py-1 text-sm sm:text-base md:text-xl bg-red-600 rounded-md w-fit h-9'>
 										{item?.movie?.episode_total > 0
 											? `${item?.movie?.episode_total?.replace('Tập', '')} Tập`
 											: 'Đang cập nhật'}
@@ -69,7 +69,7 @@ const BannerSlide = ({ movieDetails }: any) => {
 										{item?.movie?.name}{' '}
 									</h2>
 									<p
-										className='w-full sm:w-3/4 lg:w-2/3 line-clamp-3 text-sm sm:text-base md:text-lg'
+										className='w-full sm:w-3/4 lg:w-2/3 line-clamp-3 text-sm sm:text-base md:text-lg max-h-44'
 										dangerouslySetInnerHTML={{ __html: item?.movie?.content }}
 									/>
 									<div className='flex items-center gap-5'>
@@ -80,7 +80,7 @@ const BannerSlide = ({ movieDetails }: any) => {
 											</p>
 										)}
 									</div>
-									<div className='flex space-x-4 mt-4'>
+									<div className='flex gap-2 items-center'>
 										<Link href={`/product-list/${item?.movie?.slug}`} passHref>
 											<button className='flex gap-2 sm:gap-3 items-center bg-white text-black font-bold py-2 sm:py-3 px-4 sm:px-6 rounded'>
 												<FaPlay />

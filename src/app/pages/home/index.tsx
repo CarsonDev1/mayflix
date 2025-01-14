@@ -12,6 +12,9 @@ import { MovieCarousel } from '@/app/components/movie-carousel';
 import { movies } from '@/data/movie';
 import { MovieCard } from '@/app/components/movie-card';
 import { getAnimes } from '@/api/movies/anime/getAnime';
+import MostMovie from '@/app/pages/home/categories';
+import MovieSeries from '@/app/pages/home/tv-series';
+import MovieSingle from '@/app/pages/home/single-series';
 
 const HomePage = () => {
 	const [page, setPage] = useState<number>(1);
@@ -77,22 +80,22 @@ const HomePage = () => {
 			) : (
 				<BannerSlide movieDetails={movieDetails} />
 			)}
-			<div className='container'>
-				<div className='grid grid-cols-5 gap-5'>
+			{/* <div className='container'>
+				<div className='grid grid-cols-5'>
 					{movieAnimeData?.map((movie: any) => (
 						<div key={movie?.id}>
 							<MovieCard movie={movie} />
 						</div>
 					))}
 				</div>
-			</div>
+			</div> */}
 			{/* <MovieCarousel movies={movies} /> */}
 
-			{/* <main className='container'>
-				<MostMovie movieDetails={movieDetails} />
-				<MovieSeries movieDetails={movieDetails} />
-				<MovieSingle movieDetails={movieDetails} />
-			</main> */}
+			<main className='container'>
+				<MostMovie />
+				<MovieSeries />
+				<MovieSingle />
+			</main>
 		</div>
 	);
 };

@@ -1,18 +1,20 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
+import { useQuery } from '@tanstack/react-query';
+import { getSeries } from '@/api/movies/series/getSeries';
 
-interface MovieDetailsProps {
-	movieDetails: any;
-}
+const MovieSeries: React.FC = () => {
+	const [page, setPage] = useState<number>(1);
 
-const MovieSeries: React.FC<MovieDetailsProps> = ({ movieDetails }) => {
-	const mostMovies = movieDetails
-		?.filter((item: any) => item?.movie?.type === 'series')
-		.sort((a: any, b: any) => b.movie.year - a.movie.year)
-		?.slice(0, 10);
+	const { data: movieSeries } = useQuery({
+		queryKey: ['movieSeries', page],
+		queryFn: () => getSeries(page),
+	});
+
+	const series = movieSeries?.data?.items;
 
 	return (
 		<section className='sec-com'>
@@ -24,8 +26,8 @@ const MovieSeries: React.FC<MovieDetailsProps> = ({ movieDetails }) => {
 			</div>
 
 			<div className='hidden xl:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4'>
-				{mostMovies?.map((movie: any) => (
-					<MovieCard key={movie.movie?._id} movie={movie.movie} />
+				{series?.map((movie: any) => (
+					<MovieCard key={movie?._id} movie={movie} />
 				))}
 			</div>
 			<div className='flex xl:hidden'>
@@ -38,7 +40,7 @@ const MovieSeries: React.FC<MovieDetailsProps> = ({ movieDetails }) => {
 						1024: { slidesPerView: 4 },
 					}}
 				>
-					{mostMovies?.map((movie: any) => (
+					{series?.map((movie: any) => (
 						<SwiperSlide key={movie.movie?._id}>
 							<MovieCard movie={movie.movie} />
 						</SwiperSlide>
@@ -61,23 +63,21 @@ const MovieCard: React.FC<{ movie: any }> = ({ movie }) => (
 
 		{/* Overlay on hover */}
 		<div className='absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center z-10 rounded-lg'>
-			<button className='cursor-pointer'>
-				<div className='w-[83px] h-[83px] bg-red-50 rounded-full relative shadow-[inset_0px_0px_1px_1px_rgba(0,0,0,0.3),_2px_3px_5px_rgba(0,0,0,0.1)] flex items-center justify-center'>
-					<div className='absolute w-[72px] h-[72px] z-10 bg-black rounded-full left-1/2 -translate-x-1/2 top-[5px] blur-[1px]' />
-					<label className='group cursor-pointer absolute w-[72px] h-[72px] bg-gradient-to-b from-red-600 to-red-400 rounded-full left-1/2 -translate-x-1/2 top-[5px] shadow-[inset_0px_4px_2px_#60a5fa,inset_0px_-4px_0px_#1e3a8a,0px_0px_2px_rgba(0,0,0,10)] active:shadow-[inset_0px_4px_2px_rgba(96,165,250,0.5),inset_0px_-4px_2px_rgba(37,99,235,0.5),0px_0px_2px_rgba(0,0,0,10)] z-20 flex items-center justify-center'>
-						<div className='w-8 group-active:w-[31px] fill-red-100 drop-shadow-[0px_2px_2px_rgba(0,0,0,0.5)]'>
-							<svg xmlns='http://www.w3.org/2000/svg' id='Filled' viewBox='0 0 24 24'>
-								<path d='M20.492,7.969,10.954.975A5,5,0,0,0,3,5.005V19a4.994,4.994,0,0,0,7.954,4.03l9.538-6.994a5,5,0,0,0,0-8.062Z' />
-							</svg>
-						</div>
-					</label>
-				</div>
+			<button className='cursor-pointer transistion-all duration-500 hover:shadow-[0_15px_50px_-15px_#da132e] p-[12px] rounded-[24px] flex gap-4 bg-gradient-to-r from-[#c52847] to-[#da1327]'>
+				<svg className='h-12 w-12 bg-[#0a0a0a] shadow-xl rounded-full p-3' viewBox='0 0 24 24' fill='none'>
+					<path
+						fill-rule='evenodd'
+						clip-rule='evenodd'
+						d='M15.003 14H3.5v-4h11.502l-4.165-4.538 2.705-2.947 7.353 8.012c.747.813.747 2.133 0 2.947l-7.353 8.011-2.705-2.947L15.003 14z'
+						fill='#F0F0F0'
+					></path>
+				</svg>
+				<span className='text-[1.9rem] font-bold text-white pr-3'>Play Now</span>
 			</button>
 		</div>
 
-		{/* Movie Image */}
 		<Image
-			src={movie?.poster_url}
+			src={`https://phimimg.com/${movie?.poster_url}`}
 			width={500}
 			height={500}
 			alt='movie image'
