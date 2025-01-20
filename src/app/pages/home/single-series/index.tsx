@@ -20,7 +20,9 @@ const MovieSeries: React.FC = () => {
 	return (
 		<section className='sec-com'>
 			<div className='flex justify-between items-center'>
-				<h2 className='text-3xl font-bold mb-6 text-white border-b-2 border-red-600 pb-2'>Phim bộ hay nhất</h2>
+				<h2 className='text-3xl font-bold mb-6 text-white border-b-2 border-red-600 pb-2'>
+					Phim hoạt hình hay nhất
+				</h2>
 				<Link href='/series-list'>
 					<span className='text-red-500'>Xem tất cả</span>
 				</Link>

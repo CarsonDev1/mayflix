@@ -6,7 +6,10 @@ import NextTopLoader from 'nextjs-toploader';
 import Provider from '@/utils/Provider';
 import React, { Suspense } from 'react';
 import LoadingPage from '@/app/components/loading/Loading';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import '@/app/globals.css';
+import { AuthProvider } from '@/contexts/AuthProvider';
 
 const roboto = Roboto({
 	weight: ['100', '300', '400', '500', '700', '900'],
@@ -27,11 +30,14 @@ export default function RootLayout({
 		<html lang='en'>
 			<body className={`${roboto.className}`}>
 				<Provider>
-					<Header />
-					<NextTopLoader color='#df1e1e' showSpinner={false} />
-					<Suspense fallback={<LoadingPage />}>{children}</Suspense>
-					<Footer />
+					<AuthProvider>
+						<Header />
+						<NextTopLoader color='#df1e1e' showSpinner={false} />
+						<Suspense fallback={<LoadingPage />}>{children}</Suspense>
+						<Footer />
+					</AuthProvider>
 				</Provider>
+				<ToastContainer />
 			</body>
 		</html>
 	);

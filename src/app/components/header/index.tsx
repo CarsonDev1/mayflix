@@ -5,11 +5,16 @@ import { FaSearch, FaBars, FaSun } from 'react-icons/fa';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { User } from 'lucide-react';
 import Link from 'next/link';
+import { useAuth } from '@/contexts/AuthProvider';
 
 const categories = ['TV Shows', 'Movies', 'Recently Added', 'My List'];
 
 const Header: React.FC = () => {
 	const [isSticky, setIsSticky] = useState(false);
+
+	const { dataProfile, logout } = useAuth();
+
+	console.log('dataProfile', dataProfile);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -60,15 +65,22 @@ const Header: React.FC = () => {
 						</div>
 					</div>
 
-					<User className='text-xl cursor-pointer' />
-
 					<button className='text-2xl p-2 rounded-full focus:outline-none hover:bg-gray-700 transition'>
 						<FaSun />
 					</button>
 
-					<button className='bg-red-600 text-white py-2 px-4 rounded-full transition duration-300 hover:bg-red-700'>
-						Login
-					</button>
+					{dataProfile ? (
+						<div className='flex items-center gap-2'>
+							<span>{dataProfile?.name}</span>
+							<span onClick={logout} className='cursor-pointer'>
+								Log out
+							</span>
+						</div>
+					) : (
+						<button className='bg-red-600 text-white py-2 px-4 rounded-full transition duration-300 hover:bg-red-700'>
+							Login
+						</button>
+					)}
 
 					<Sheet>
 						<SheetTrigger asChild>

@@ -73,10 +73,10 @@ const BannerSlide = ({ movieDetails }: any) => {
 										dangerouslySetInnerHTML={{ __html: item?.movie?.content }}
 									/>
 									<div className='flex items-center gap-5'>
-										{item?.movie?.tmdb.vote_average > 0 && (
+										{item?.movie?.tmdb?.vote_average > 0 && (
 											<p className='flex items-center space-x-1 text-sm sm:text-base px-3 py-1 bg-yellow-300/20 w-fit rounded-sm'>
 												<FaStar className='text-yellow-500' />
-												<span>{item?.movie?.tmdb.vote_average?.toFixed(1)}</span>
+												<span>{item?.movie?.tmdb?.vote_average?.toFixed(1)}</span>
 											</p>
 										)}
 									</div>

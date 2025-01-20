@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
+import { getUserById } from '@/api/account/getAccount';
 // import { getAccount } from '@/app/apis/getProfile';
 import Provider from '@/utils/Provider';
 import { useQuery } from '@tanstack/react-query';
@@ -14,9 +15,9 @@ interface AuthContextType {
 	cartCount: number;
 	addToCart: (product: any) => void;
 	clearCart: () => void;
-	// dataProfile: any;
-	// isLoading: boolean;
-	// error: any;
+	dataProfile: any;
+	isLoading: boolean;
+	error: any;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -76,20 +77,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 		}
 	};
 
-	// Fetch user profile
-	// const {
-	// 	data: dataProfile,
-	// 	isLoading,
-	// 	error,
-	// } = useQuery({
-	// 	queryKey: ['dataProfile'],
-	// 	queryFn: getAccount,
-	// });
+	const userId: any = localStorage.getItem('userId');
 
-	// useEffect(() => {
-	// 	setIsAuthenticated(!!localStorage.getItem('accessToken'));
-	// 	dataProfile;
-	// }, []);
+	const {
+		data: dataProfile,
+		isLoading,
+		error,
+	} = useQuery({
+		queryKey: ['dataProfile', userId],
+		queryFn: () => getUserById(userId),
+	});
+
+	useEffect(() => {
+		setIsAuthenticated(!!localStorage.getItem('accessToken'));
+	}, []);
 
 	return (
 		<Provider>
@@ -101,9 +102,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 					cartCount,
 					addToCart,
 					clearCart,
-					// dataProfile,
-					// isLoading,
-					// error,
+					dataProfile,
+					isLoading,
+					error,
 				}}
 			>
 				{children}
