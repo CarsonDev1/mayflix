@@ -137,7 +137,7 @@ export default function LoginForm() {
 								{loading ? 'Sending...' : 'SEND RESET LINK'}
 							</Button>
 							<Button
-								variant='outline'
+								variant='default'
 								className='w-full h-12 text-lg font-bold border-[#F5A524] text-[#F5A524] hover:bg-[#F5A524] hover:text-black'
 								onClick={() => setIsForgotPassword(false)} // Go back to login form
 							>
@@ -179,9 +179,10 @@ export default function LoginForm() {
 						{/* Submit Button */}
 						<div className='mt-6 flex flex-col gap-2'>
 							<Button
-								className='w-full h-12 text-lg font-bold bg-[#F5A524] hover:bg-[#F5A524]/90 text-black'
+								className='w-full h-12 text-lg font-bold'
 								type='submit'
 								disabled={loading}
+								variant='default'
 							>
 								{loading ? 'Logging in...' : 'LOG IN'}
 							</Button>
@@ -205,8 +206,8 @@ export default function LoginForm() {
 							<div className='text-center text-sm text-gray-400'>
 								<button
 									type='button'
-									className='text-[#F5A524] hover:text-[#F5A524] focus:outline-none'
-									onClick={() => setIsForgotPassword(true)} // Switch to forgot password form
+									className='text-[#f5242e] hover:text-[#f5242e] focus:outline-none'
+									onClick={() => setIsForgotPassword(true)}
 								>
 									Forgot your password?
 								</button>

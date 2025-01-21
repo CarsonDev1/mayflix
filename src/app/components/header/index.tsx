@@ -3,18 +3,32 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { FaSearch, FaBars, FaSun } from 'react-icons/fa';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { User } from 'lucide-react';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthProvider';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuShortcut,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useRouter } from 'next/navigation';
 
-const categories = ['TV Shows', 'Movies', 'Recently Added', 'My List'];
+const categories = ['Phim Truyền Hình', 'Phim Bộ', 'Đã Xem Gần Đây', 'Danh sách của tôi'];
 
 const Header: React.FC = () => {
 	const [isSticky, setIsSticky] = useState(false);
 
 	const { dataProfile, logout } = useAuth();
+	const [keyword, setKeyword] = useState('');
+	const [movies, setMovies] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState(null);
 
-	console.log('dataProfile', dataProfile);
+	const router: any = useRouter();
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -26,6 +40,31 @@ const Header: React.FC = () => {
 			window.removeEventListener('scroll', handleScroll);
 		};
 	}, []);
+
+	const handleSearch = async () => {
+		if (!keyword.trim()) return;
+
+		setLoading(true);
+		setError(null);
+
+		try {
+			const response = await fetch(
+				`https://phimapi.com/v1/api/tim-kiem?keyword=${encodeURIComponent(keyword)}&limit=10`
+			);
+
+			if (!response.ok) {
+				throw new Error('Failed to fetch data');
+			}
+
+			const data = await response.json();
+
+			router.push(`/search?keyword=${encodeURIComponent(keyword)}`);
+		} catch (err: any) {
+			setError(err.message || 'Something went wrong');
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	return (
 		<header
@@ -52,30 +91,94 @@ const Header: React.FC = () => {
 				<div className='flex items-center space-x-6'>
 					<div className='relative hidden md:block'>
 						<div className='relative'>
-							<input
-								type='text'
-								name='text'
-								className='pl-10 h-10 text-sm text-white bg-[#1f0404] border-none outline-none rounded-full cursor-pointer shadow-md focus:ring-2 focus:ring-red-600'
-								placeholder='Search...'
-								required
-							/>
-							<div className='absolute top-0 left-0 w-10 h-10 p-2 pointer-events-none'>
-								<FaSearch className='w-full h-full' />
-							</div>
+							<form className='flex bg-zinc-800 border border-zinc-700 rounded-md shadow text-white text-sm'>
+								<button
+									aria-disabled='true'
+									className='text-white w-10 grid place-content-center'
+									onClick={handleSearch}
+									disabled={loading}
+								>
+									<svg
+										xmlns='http://www.w3.org/2000/svg'
+										width='16'
+										height='16'
+										viewBox='0 0 24 24'
+										fill='none'
+										stroke='currentColor'
+										stroke-width='2'
+										stroke-linecap='round'
+										stroke-linejoin='round'
+									>
+										<circle cx='11' cy='11' r='8'></circle>
+										<path d='m21 21-4.3-4.3'></path>
+									</svg>
+								</button>
+								<input
+									type='text'
+									spellCheck='false'
+									name='text'
+									className='bg-transparent py-2 outline-none placeholder:text-zinc-400 w-28 focus:w-48 transition-all'
+									placeholder='Tìm kiếm phim...'
+									value={keyword}
+									onChange={(e) => setKeyword(e.target.value)}
+								/>
+								<button
+									className='text-white w-10 grid place-content-center'
+									aria-label='Clear input button'
+									type='reset'
+								>
+									<svg
+										stroke-linejoin='round'
+										stroke-linecap='round'
+										stroke-width='2'
+										stroke='currentColor'
+										fill='none'
+										viewBox='0 0 24 24'
+										height='16'
+										width='16'
+										xmlns='http://www.w3.org/2000/svg'
+									>
+										<path d='M18 6 6 18'></path>
+										<path d='m6 6 12 12'></path>
+									</svg>
+								</button>
+							</form>
 						</div>
 					</div>
-
+					{/* 
 					<button className='text-2xl p-2 rounded-full focus:outline-none hover:bg-gray-700 transition'>
 						<FaSun />
-					</button>
+					</button> */}
 
 					{dataProfile ? (
-						<div className='flex items-center gap-2'>
-							<span>{dataProfile?.name}</span>
-							<span onClick={logout} className='cursor-pointer'>
-								Log out
-							</span>
-						</div>
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<div className='cursor-pointer'>
+									<Image
+										src='/ic-profile.jpg'
+										width={50}
+										height={50}
+										alt='ic-profile'
+										className='size-10 object-cover rounded-md'
+									/>
+								</div>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent className='w-56'>
+								<DropdownMenuLabel>Tài khoản của tôi</DropdownMenuLabel>
+								<DropdownMenuSeparator />
+								<DropdownMenuGroup>
+									<DropdownMenuItem>
+										Hồ sơ
+										<DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+									</DropdownMenuItem>
+								</DropdownMenuGroup>
+								<DropdownMenuSeparator />
+								<DropdownMenuItem onClick={logout}>
+									Đăng xuất
+									<DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
 					) : (
 						<button className='bg-red-600 text-white py-2 px-4 rounded-full transition duration-300 hover:bg-red-700'>
 							Login

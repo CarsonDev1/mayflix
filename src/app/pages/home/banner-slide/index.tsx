@@ -84,11 +84,11 @@ const BannerSlide = ({ movieDetails }: any) => {
 										<Link href={`/product-list/${item?.movie?.slug}`} passHref>
 											<button className='flex gap-2 sm:gap-3 items-center bg-white text-black font-bold py-2 sm:py-3 px-4 sm:px-6 rounded'>
 												<FaPlay />
-												<span>Play</span>
+												<span>Xem ngay</span>
 											</button>
 										</Link>
 										<button className='flex gap-2 sm:gap-3 items-center bg-white/20 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded'>
-											<FaList /> My List
+											<FaList /> Thêm vào danh sách
 										</button>
 									</div>
 								</div>

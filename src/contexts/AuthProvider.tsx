@@ -32,7 +32,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 		typeof window !== 'undefined' && !!localStorage.getItem('accessToken')
 	);
 
-	// Cart state and functions
 	const [cartCount, setCartCount] = useState<number>(0);
 
 	useEffect(() => {
@@ -67,11 +66,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 			console.log('Logging out...');
 			localStorage.removeItem('accessToken');
 			localStorage.removeItem('refreshToken');
-			localStorage.removeItem('cart'); // Clear cart when logging out
+			localStorage.removeItem('cart');
+			localStorage.removeItem('userId');
 			setIsAuthenticated(false);
 			setCartCount(0);
 			console.log('Logged out successfully');
-			router.push('/login'); // Navigate to login page immediately
+			router.push('/login');
 		} else {
 			console.error('Logout failed: window is undefined');
 		}

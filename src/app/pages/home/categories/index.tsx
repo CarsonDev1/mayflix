@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import { useQuery } from '@tanstack/react-query';
 import { getOdd } from '@/api/movies/odd/getOdd';
+import { Play } from 'lucide-react';
 
 const MostMovie: React.FC = () => {
 	const [page, setPage] = useState<number>(1);
@@ -63,16 +64,15 @@ const MovieCard: React.FC<{ movie: any }> = ({ movie }) => (
 
 		{/* Overlay on hover */}
 		<div className='absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center z-10 rounded-lg'>
-			<button className='cursor-pointer transistion-all duration-500 hover:shadow-[0_15px_50px_-15px_#da132e] p-[12px] rounded-[24px] flex gap-4 bg-gradient-to-r from-[#c52847] to-[#da1327]'>
-				<svg className='h-12 w-12 bg-[#0a0a0a] shadow-xl rounded-full p-3' viewBox='0 0 24 24' fill='none'>
-					<path
-						fill-rule='evenodd'
-						clip-rule='evenodd'
-						d='M15.003 14H3.5v-4h11.502l-4.165-4.538 2.705-2.947 7.353 8.012c.747.813.747 2.133 0 2.947l-7.353 8.011-2.705-2.947L15.003 14z'
-						fill='#F0F0F0'
-					></path>
-				</svg>
-				<span className='text-[1.9rem] font-bold text-white pr-3'>Play Now</span>
+			<button
+				className='group relative w-20 h-20 bg-red-600 rounded-full overflow-hidden shadow-lg transition-all duration-300 ease-in-out transform hover:scale-110 focus:outline-none focus:ring-4 focus:ring-red-400 focus:ring-opacity-50'
+				aria-label='Play movie'
+			>
+				<div className='absolute inset-0 bg-gradient-to-br from-red-500 to-red-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out' />
+				<div className='absolute inset-0 flex items-center justify-center'>
+					<Play className='w-10 h-10 text-white transform translate-x-0.5 group-hover:scale-125 transition-transform duration-300 ease-in-out' />
+				</div>
+				<div className='absolute inset-0 border-4 border-white opacity-0 group-hover:opacity-25 rounded-full scale-50 group-hover:scale-100 transition-all duration-300 ease-in-out' />
 			</button>
 		</div>
 

@@ -36,7 +36,7 @@ const Watch = () => {
 	console.log('items: ', items);
 
 	return (
-		<div className='w-full sec-com bg-black text-white'>
+		<div className='w-full py-20 bg-black text-white'>
 			<div className='container'>
 				<div className='w-full flex gap-16'>
 					<div className='w-3/4 flex flex-col gap-6'>

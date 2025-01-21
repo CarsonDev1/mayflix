@@ -138,6 +138,23 @@ const RegisterForm = () => {
 						</Button>
 					</div>
 				</div>
+				<div className='mt-6 text-center text-white border-t border-gray-700 pt-4'>
+					<p className='mb-2'>
+						Already have an account?{' '}
+						<a href='/login' className='text-blue-400 underline hover:text-blue-300'>
+							Log in.
+						</a>
+					</p>
+					<p className='text-sm'>
+						This page is protected by Google reCAPTCHA to ensure you're not a bot.{' '}
+						<a
+							href='https://www.google.com/recaptcha'
+							className='text-blue-400 underline hover:text-blue-300'
+						>
+							Learn more.
+						</a>
+					</p>
+				</div>
 			</form>
 		</div>
 	);

@@ -33,11 +33,11 @@ const ProductDetail = () => {
 	const dataEpisodes = moviesData?.episodes?.[0]?.server_data?.[0];
 
 	return (
-		<div className='bg-black sec-com'>
+		<div className='bg-black py-20'>
 			<div className='container'>
 				<div className='w-full h-[600px] relative'>
 					<Image
-						src={moviesData?.movie?.poster_url}
+						src={moviesData?.movie?.thumb_url}
 						alt='thumb_movie'
 						width={1820}
 						height={1200}
