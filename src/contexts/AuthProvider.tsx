@@ -54,11 +54,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
 	// Auth functions
 	const login = ({ accessToken, refreshToken }: { accessToken: string; refreshToken: string }) => {
-		if (typeof window !== 'undefined') {
-			localStorage.setItem('accessToken', accessToken);
-			localStorage.setItem('refreshToken', refreshToken);
-			setIsAuthenticated(true);
-		}
+		localStorage.setItem('accessToken', accessToken);
+		localStorage.setItem('refreshToken', refreshToken);
+		setIsAuthenticated(true);
 	};
 
 	const logout = () => {

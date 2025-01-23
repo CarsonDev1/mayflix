@@ -12,6 +12,7 @@ import api from '@/utils/api';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
+import { useAuth } from '@/contexts/AuthProvider';
 
 // Define the validation schema with Zod for login
 const schema = z.object({
@@ -34,6 +35,7 @@ export default function LoginForm() {
 	const [showPassword, setShowPassword] = useState(false);
 	const [isForgotPassword, setIsForgotPassword] = useState(false);
 	const router = useRouter();
+	const { login } = useAuth();
 
 	const {
 		register,
@@ -59,8 +61,9 @@ export default function LoginForm() {
 				password: data.password,
 			});
 
-			if (response?.status === 200) {
-				const { user, tokens } = response.data;
+			if (response.status === 200) {
+				const { tokens, user } = response.data;
+				login({ accessToken: tokens.access.token, refreshToken: tokens.refresh.token });
 
 				localStorage.setItem('userId', user.id);
 				localStorage.setItem('accessToken', tokens.access.token);
@@ -68,12 +71,10 @@ export default function LoginForm() {
 
 				toast.success('Login successful!');
 				router.push('/');
-			} else {
-				toast.error(response?.data?.payload?.vi || 'Login failed');
 			}
 		} catch (err: any) {
-			toast.error(err?.response?.data?.payload?.vi || 'Login failed');
-			console.error('Login error:', err);
+			toast.error(err?.response?.data?.message || 'Login Failed!');
+			console.error('Login error:', err?.response?.data?.message);
 		} finally {
 			setLoading(false);
 		}
@@ -113,9 +114,9 @@ export default function LoginForm() {
 
 				{/* Forgot Password Form */}
 				{isForgotPassword ? (
-					<form className='space-y-4' onSubmit={handleForgotPasswordSubmit(onForgotPasswordSubmit)}>
+					<form className='flex flex-col gap-3' onSubmit={handleForgotPasswordSubmit(onForgotPasswordSubmit)}>
 						{/* Email Field */}
-						<div>
+						<div className='flex flex-col gap-1 relative'>
 							<Input
 								className='h-12 bg-white text-black placeholder:text-gray-500 text-lg'
 								placeholder='Email'
@@ -149,7 +150,7 @@ export default function LoginForm() {
 					// Login Form
 					<form className='space-y-4' onSubmit={handleSubmit(onSubmit)}>
 						{/* Email Field */}
-						<div>
+						<div className='flex flex-col gap-1'>
 							<Input
 								className='h-12 bg-white text-black placeholder:text-gray-500 text-lg'
 								placeholder='Email'
@@ -160,19 +161,21 @@ export default function LoginForm() {
 						</div>
 
 						{/* Password Field */}
-						<div className='relative'>
-							<Input
-								className='h-12 bg-white text-black placeholder:text-gray-500 text-lg'
-								placeholder='Password'
-								type={showPassword ? 'text' : 'password'}
-								{...register('password')}
-							/>
-							<span
-								className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer'
-								onClick={() => setShowPassword((prev) => !prev)}
-							>
-								{showPassword ? '👁️' : '👁️‍🗨️'}
-							</span>
+						<div className='flex flex-col gap-1'>
+							<div className='relative'>
+								<Input
+									className='h-12 bg-white text-black placeholder:text-gray-500 text-lg'
+									placeholder='Password'
+									type={showPassword ? 'text' : 'password'}
+									{...register('password')}
+								/>
+								<span
+									className='absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer'
+									onClick={() => setShowPassword((prev) => !prev)}
+								>
+									{showPassword ? '👁️' : '👁️‍🗨️'}
+								</span>
+							</div>
 							{errors.password && <p className='text-red-500'>{errors.password.message}</p>}
 						</div>
 

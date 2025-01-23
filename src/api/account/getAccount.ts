@@ -1,8 +1,9 @@
 import api from '@/utils/api';
+import apiToken from '@/utils/apiToken';
 
 export const getUserById = async (userId: string): Promise<any> => {
 	try {
-		const response = await api.get<{ status: string }>(`v1/users/${userId}`);
+		const response = await apiToken.get<{ status: string }>(`v1/users/${userId}`);
 
 		return response.data;
 	} catch (error: unknown) {
