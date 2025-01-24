@@ -1,6 +1,7 @@
 'use client';
 
 import { getMovieSlug } from '@/api/movies/[slug]/route';
+import { getOdd } from '@/api/movies/odd/getOdd';
 import { getMovies } from '@/api/movies/routes';
 import EpisodeSelector from '@/app/components/espisode';
 import { useQuery } from '@tanstack/react-query';
@@ -13,6 +14,7 @@ const Watch = () => {
 	const searchParams = useSearchParams();
 	const episode = searchParams.get('episode');
 	const link = searchParams.get('link');
+	const page = 1;
 
 	const params = useParams() as unknown as Params;
 	const { slug } = params;
@@ -22,18 +24,14 @@ const Watch = () => {
 		queryFn: () => getMovieSlug(slug),
 	});
 
-	const {
-		data: moviesData,
-		isLoading,
-		isError,
-	} = useQuery({
-		queryKey: ['movies', 1],
-		queryFn: () => getMovies(1),
+	const { data: movieMost } = useQuery({
+		queryKey: ['movieMost', page],
+		queryFn: () => getOdd(page),
 	});
 
-	const items = moviesData?.items?.slice(0, 10);
+	const items = movieMost?.data?.items;
 
-	console.log('items: ', items);
+	console.log('items', items);
 
 	return (
 		<div className='w-full py-20 bg-black text-white'>
@@ -50,7 +48,7 @@ const Watch = () => {
 					</div>
 					<div className='flex flex-col gap-2 w-[25%]'>
 						<h2 className='uppercase text-xl'>Có thể bạn muốn xem</h2>
-						{items?.map((movie: any) => (
+						{/* {items?.map((movie: any) => (
 							<Link href={`/product-list/${movie?.slug}`} passHref key={movie?.id}>
 								<div className='flex gap-3 text-white'>
 									<Image
@@ -67,7 +65,7 @@ const Watch = () => {
 									</div>
 								</div>
 							</Link>
-						))}
+						))} */}
 					</div>
 				</div>
 			</div>

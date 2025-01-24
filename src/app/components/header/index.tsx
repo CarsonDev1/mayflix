@@ -16,13 +16,22 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useRouter } from 'next/navigation';
+import { useQuery } from '@tanstack/react-query';
+import { getUserById } from '@/api/account/getAccount';
 
 const categories = ['Phim Truyền Hình', 'Phim Bộ', 'Đã Xem Gần Đây', 'Danh sách của tôi'];
 
 const Header: React.FC = () => {
 	const [isSticky, setIsSticky] = useState(false);
 
-	const { dataProfile, logout } = useAuth();
+	const { logout } = useAuth();
+	const userId: any = localStorage.getItem('userId');
+
+	const { data: dataProfile } = useQuery({
+		queryKey: ['dataProfile', userId],
+		queryFn: () => getUserById(userId),
+	});
+
 	const [keyword, setKeyword] = useState('');
 	const [movies, setMovies] = useState([]);
 	const [loading, setLoading] = useState(false);
@@ -180,9 +189,11 @@ const Header: React.FC = () => {
 							</DropdownMenuContent>
 						</DropdownMenu>
 					) : (
-						<button className='bg-red-600 text-white py-2 px-4 rounded-full transition duration-300 hover:bg-red-700'>
-							Login
-						</button>
+						<Link href='/login'>
+							<button className='bg-red-600 text-white py-2 px-4 rounded-full transition duration-300 hover:bg-red-700'>
+								Login
+							</button>
+						</Link>
 					)}
 
 					<Sheet>

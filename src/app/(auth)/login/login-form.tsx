@@ -63,11 +63,11 @@ export default function LoginForm() {
 
 			if (response.status === 200) {
 				const { tokens, user } = response.data;
+				localStorage.setItem('userId', user.id);
 				login({ accessToken: tokens.access.token, refreshToken: tokens.refresh.token });
 
-				localStorage.setItem('userId', user.id);
-				localStorage.setItem('accessToken', tokens.access.token);
-				localStorage.setItem('refreshToken', tokens.refresh.token);
+				// localStorage.setItem('accessToken', tokens.access.token);
+				// localStorage.setItem('refreshToken', tokens.refresh.token);
 
 				toast.success('Login successful!');
 				router.push('/');
